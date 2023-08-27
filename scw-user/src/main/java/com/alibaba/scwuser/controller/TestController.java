@@ -17,6 +17,7 @@ public class TestController {
     @GetMapping("/auto")
     public String testAudo() {
         log.info("log info: {}", "test controller");
+        System.out.println("提交分支项目");
         return "auto ok";
     }
 }
