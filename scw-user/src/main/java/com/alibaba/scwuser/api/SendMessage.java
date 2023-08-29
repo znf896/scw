@@ -5,5 +5,5 @@ import response.AppResponse;
 import java.io.IOException;
 
 public interface SendMessage {
-    AppResponse<String> sendMessage() throws IOException;
+    AppResponse<String> sendMessage(String phone) throws IOException;
 }

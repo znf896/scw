@@ -6,7 +6,7 @@ import lombok.Data;
 public class UserRegisterVO {
 
     /**
-     * 登录账号
+     * 手机号
      */
     private String loginacct;
 

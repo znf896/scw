@@ -34,7 +34,7 @@ class ScwUserApplicationTests {
     @Test
     void testMessage() {
         try {
-            AppResponse<String> responseBodyAppResponse = sendMessage.sendMessage();
+            AppResponse<String> responseBodyAppResponse = sendMessage.sendMessage("17857692659");
             System.out.println("AppResponse: " + responseBodyAppResponse);
             String res = JSON.toJSONString(responseBodyAppResponse);
             System.out.println(res);

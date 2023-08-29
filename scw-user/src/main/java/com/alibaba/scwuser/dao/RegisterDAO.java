@@ -2,6 +2,7 @@ package com.alibaba.scwuser.dao;
 
 import lombok.Data;
 
+
 @Data
 public class RegisterDAO {
     private Integer id;
