@@ -21,13 +21,7 @@ public class SendMessageImpl implements SendMessage {
 
         //获取 OkHttpClient 对象
         OkHttpClient httpClient = new OkHttpClient.Builder().build();
-
-        //构造body参数
-//        JSONObject jsonBody = new JSONObject();
-//        jsonBody.put("mobile", "17857692659");
-//        jsonBody.put("templateId", "908e94ccf08b4476ba6c876d13f084ad");
-//        jsonBody.put("smsSignId", "2e65b1bb3d054466b82f0c9d125465e2");
-//        jsonBody.put("param", "**code**:77777,**minute**:5");
+        
         //创建query参数
         StringBuilder param = new StringBuilder();
         param.append("**code**:")
