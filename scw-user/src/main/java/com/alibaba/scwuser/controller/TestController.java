@@ -30,10 +30,14 @@ public class TestController {
         return "auto ok";
     }
 
-    @PostMapping("/login")
-    public AppResponse<String> login(UserRegisterVO userRegisterVO) {
-        login.register(userRegisterVO);
-        return null;
+    @PostMapping("/register")
+    public AppResponse<String> register(UserRegisterVO userRegisterVO) {
+        try {
+            return login.register(userRegisterVO);
+        } catch (Exception e) {
+            return AppResponse.fail("注册异常");
+        }
+
     }
 
 }

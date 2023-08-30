@@ -39,9 +39,9 @@ public class SendMessageImpl implements SendMessage {
         StringBuilder param = new StringBuilder();
         param.append("**code**:")
                 .append(code)
-                .append(",**minute**:5");
+                .append(",**minute**:10");
 
-        stringRedisTemplate.opsForValue().set(phone, code, 5, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(phone, code, 10, TimeUnit.MINUTES);
         log.info("验证码：{}", param.toString());
 
         FormBody formBody = new FormBody.Builder()

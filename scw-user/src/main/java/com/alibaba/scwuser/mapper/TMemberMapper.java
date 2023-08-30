@@ -2,8 +2,9 @@ package com.alibaba.scwuser.mapper;
 
 import com.alibaba.scwuser.entity.TMember;
 import com.alibaba.scwuser.entity.TMemberExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TMemberMapper {
     long countByExample(TMemberExample example);
@@ -27,4 +28,6 @@ public interface TMemberMapper {
     int updateByPrimaryKeySelective(TMember row);
 
     int updateByPrimaryKey(TMember row);
+
+    String findByEmail(String email);
 }
