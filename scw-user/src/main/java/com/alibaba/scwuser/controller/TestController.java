@@ -1,7 +1,9 @@
 package com.alibaba.scwuser.controller;
 
 import com.alibaba.scwuser.api.Login;
-import com.alibaba.scwuser.vo.UserRegisterVO;
+import com.alibaba.scwuser.vo.request.UserLoginVO;
+import com.alibaba.scwuser.vo.request.UserRegisterVO;
+import com.alibaba.scwuser.vo.response.UserRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,4 +42,14 @@ public class TestController {
 
     }
 
+    @PostMapping("/login")
+    public AppResponse<UserRespVO> login(UserLoginVO userLoginVO) {
+        try {
+            return login.doLogin(userLoginVO);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return AppResponse.fail(null);
+        }
+
+    }
 }

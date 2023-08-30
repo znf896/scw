@@ -1,4 +1,4 @@
-package com.alibaba.scwuser.vo;
+package com.alibaba.scwuser.vo.request;
 
 import lombok.Data;
 

@@ -80,7 +80,7 @@
     </sql>
 
     <sql id="Base_Column_List">
-        id, loginacct, userpswd, username, email, authstatus, usertype, realname, cardnum, accttype
+                id, loginacct, userpswd, username, email, authstatus, usertype, realname, cardnum, accttype
     </sql>
     <select id="selectByExample" parameterType="com.alibaba.scwuser.entity.TMemberExample" resultMap="BaseResultMap">
         select
@@ -115,13 +115,13 @@
     </delete>
     <insert id="insert" parameterType="com.alibaba.scwuser.entity.TMember">
         insert into t_member (id, loginacct, userpswd,
-        username, email, authstatus,
-        usertype, realname, cardnum,
-        accttype)
+                              username, email, authstatus,
+                              usertype, realname, cardnum,
+                              accttype)
         values (#{id,jdbcType=INTEGER}, #{loginacct,jdbcType=VARCHAR}, #{userpswd,jdbcType=CHAR},
-        #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{authstatus,jdbcType=CHAR},
-        #{usertype,jdbcType=CHAR}, #{realname,jdbcType=VARCHAR}, #{cardnum,jdbcType=VARCHAR},
-        #{accttype,jdbcType=CHAR})
+                #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{authstatus,jdbcType=CHAR},
+                #{usertype,jdbcType=CHAR}, #{realname,jdbcType=VARCHAR}, #{cardnum,jdbcType=VARCHAR},
+                #{accttype,jdbcType=CHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.alibaba.scwuser.entity.TMember">
         insert into t_member
@@ -285,15 +285,15 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.alibaba.scwuser.entity.TMember">
         update t_member
-        set loginacct = #{loginacct,jdbcType=VARCHAR},
-        userpswd = #{userpswd,jdbcType=CHAR},
-        username = #{username,jdbcType=VARCHAR},
-        email = #{email,jdbcType=VARCHAR},
-        authstatus = #{authstatus,jdbcType=CHAR},
-        usertype = #{usertype,jdbcType=CHAR},
-        realname = #{realname,jdbcType=VARCHAR},
-        cardnum = #{cardnum,jdbcType=VARCHAR},
-        accttype = #{accttype,jdbcType=CHAR}
+        set loginacct  = #{loginacct,jdbcType=VARCHAR},
+            userpswd   = #{userpswd,jdbcType=CHAR},
+            username   = #{username,jdbcType=VARCHAR},
+            email      = #{email,jdbcType=VARCHAR},
+            authstatus = #{authstatus,jdbcType=CHAR},
+            usertype   = #{usertype,jdbcType=CHAR},
+            realname   = #{realname,jdbcType=VARCHAR},
+            cardnum    = #{cardnum,jdbcType=VARCHAR},
+            accttype   = #{accttype,jdbcType=CHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -303,6 +303,16 @@
         from
         <include refid="Base_Table"/>
         where email = #{email}
+    </select>
+
+    <!--    TMember selectByUsername(UserDAO userDAO);-->
+    <select id="selectByUsername" resultType="com.alibaba.scwuser.entity.TMember">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="Base_Table"/>
+        where username = #{username}
+
     </select>
 
 

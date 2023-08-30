@@ -1,5 +1,6 @@
 package com.alibaba.scwuser.mapper;
 
+import com.alibaba.scwuser.dao.UserDAO;
 import com.alibaba.scwuser.entity.TMember;
 import com.alibaba.scwuser.entity.TMemberExample;
 import org.apache.ibatis.annotations.Param;
@@ -30,4 +31,7 @@ public interface TMemberMapper {
     int updateByPrimaryKey(TMember row);
 
     String findByEmail(String email);
+
+    TMember selectByUsername(UserDAO userDAO);
+
 }
