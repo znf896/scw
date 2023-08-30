@@ -1,6 +1,7 @@
 package com.alibaba.scwuser.service;
 
 import com.alibaba.scwuser.api.Login;
+import com.alibaba.scwuser.api.domain.UserRepository;
 import com.alibaba.scwuser.dao.RegisterDAO;
 import com.alibaba.scwuser.enums.AuthEnum;
 import com.alibaba.scwuser.enums.RegisterEnum;
@@ -21,6 +22,9 @@ import javax.annotation.Resource;
 public class LoginImpl implements Login {
     @Resource
     StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    UserRepository userRepository;
 
 
     @Override
@@ -55,9 +59,14 @@ public class LoginImpl implements Login {
         registerDO.setAuthstatus(AuthEnum.AUTHORIZED.getAuthStatus());
 
         //保存用户
+        try {
+            int result = userRepository.saveRegitser(registerDO);
+            log.info("用户保存成功 {}", registerDO);
+            return AppResponse.ok(RegisterEnum.SUCCESS.getMessage());
+        } catch (Exception e) {
+            log.error("保存失败 {}", e.getMessage());
+            return AppResponse.ok(RegisterEnum.FAIL.getMessage());
+        }
 
-        //返回结果
-
-        return null;
     }
 }
