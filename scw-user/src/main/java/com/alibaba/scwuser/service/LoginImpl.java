@@ -60,7 +60,7 @@ public class LoginImpl implements Login {
 
         //保存用户
         try {
-            int result = userRepository.saveRegitser(registerDO);
+            userRepository.saveRegitser(registerDO);
             log.info("用户保存成功 {}", registerDO);
             return AppResponse.ok(RegisterEnum.SUCCESS.getMessage());
         } catch (Exception e) {
