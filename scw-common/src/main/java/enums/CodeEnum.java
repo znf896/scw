@@ -8,7 +8,10 @@ import java.util.Arrays;
 public enum CodeEnum {
     EXPIRED(0, "已过期"),
 
-    UNEXPIRED(1, "未过期");
+    UNEXPIRED(1, "未过期"),
+
+    NOTEXIST(4, "不存在"),
+    ;
 
     private Integer code;
 
@@ -31,9 +34,7 @@ public enum CodeEnum {
     }
 
     CodeEnum of(CodeEnum codeEnum) {
-        return Arrays.stream(CodeEnum.values()).filter(c -> {
-            return c.name().equals(codeEnum.name());
-        }).findFirst().orElse(null);
+        return Arrays.stream(CodeEnum.values()).filter(c -> c.name().equals(codeEnum.name())).findFirst().orElse(null);
     }
 
 

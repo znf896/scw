@@ -1,7 +1,9 @@
 package com.alibaba.scwuser.controller;
 
 import com.alibaba.scwuser.api.Login;
-import com.alibaba.scwuser.vo.UserRegisterVO;
+import com.alibaba.scwuser.vo.request.UserLoginVO;
+import com.alibaba.scwuser.vo.request.UserRegisterVO;
+import com.alibaba.scwuser.vo.response.UserRespVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,10 +32,24 @@ public class TestController {
         return "auto ok";
     }
 
-    @PostMapping("/login")
-    public AppResponse<String> login(UserRegisterVO userRegisterVO) {
-        login.register(userRegisterVO);
-        return null;
+    @PostMapping("/register")
+    public AppResponse<String> register(UserRegisterVO userRegisterVO) {
+        try {
+            return login.register(userRegisterVO);
+        } catch (Exception e) {
+            return AppResponse.fail("注册异常");
+        }
+
     }
 
+    @PostMapping("/login")
+    public AppResponse<UserRespVO> login(UserLoginVO userLoginVO) {
+        try {
+            return login.doLogin(userLoginVO);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return AppResponse.fail(null);
+        }
+
+    }
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 
 @Data
-public class RegisterDAO {
+public class UserDAO {
     private Integer id;
     private String loginacct;
     private String userpswd;
