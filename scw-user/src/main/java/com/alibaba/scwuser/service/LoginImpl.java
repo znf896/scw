@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import response.AppResponse;
 
 import javax.annotation.Resource;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -109,8 +109,7 @@ public class LoginImpl implements Login {
 
         //生成令牌
         UserRespVO userRespVO = userAssembler.convertUserDAO2UserRespVO(userDAO);
-        String token = UUID.randomUUID().toString().replace("-", "");
-        userRespVO.setToken(token);
+        stringRedisTemplate.opsForValue().set(userRespVO.getLoginacct(), userRespVO.getToken(), 24, TimeUnit.HOURS);
         log.info("登录成功：{}", userRespVO);
 
         return AppResponse.ok(userRespVO);

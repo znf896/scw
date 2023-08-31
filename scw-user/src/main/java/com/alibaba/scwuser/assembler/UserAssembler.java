@@ -8,6 +8,7 @@ import com.alibaba.scwuser.vo.request.UserRegisterVO;
 import com.alibaba.scwuser.vo.response.UserRespVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+import utils.AssembleerUtils;
 
 import java.util.Random;
 
@@ -33,8 +34,9 @@ public class UserAssembler {
     public UserRespVO convertUserDAO2UserRespVO(UserDAO userDAO) {
         UserRespVO userRespVO = new UserRespVO();
         BeanUtils.copyProperties(userDAO, userRespVO);
+        String token = AssembleerUtils.genRandomToken();
+        userRespVO.setToken(token);
         return userRespVO;
-
     }
 
 }
