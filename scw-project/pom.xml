@@ -23,6 +23,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.7</version>
+        </dependency>
+        <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.8.0</version>
@@ -73,22 +78,22 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <configuration>
-                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
-                    <overwrite>true</overwrite>
-                </configuration>
-                <dependencies>
-                    <!-- 插件依赖的数据库驱动 -->
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>5.1.49</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.mybatis.generator</groupId>-->
+            <!--                <artifactId>mybatis-generator-maven-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>-->
+            <!--                    <overwrite>true</overwrite>-->
+            <!--                </configuration>-->
+            <!--                <dependencies>-->
+            <!--                    &lt;!&ndash; 插件依赖的数据库驱动 &ndash;&gt;-->
+            <!--                    <dependency>-->
+            <!--                        <groupId>mysql</groupId>-->
+            <!--                        <artifactId>mysql-connector-java</artifactId>-->
+            <!--                        <version>5.1.49</version>-->
+            <!--                    </dependency>-->
+            <!--                </dependencies>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
