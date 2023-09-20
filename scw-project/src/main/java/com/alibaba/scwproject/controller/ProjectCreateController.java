@@ -7,15 +7,14 @@ import com.alibaba.scwproject.entity.BaseVO;
 import com.alibaba.scwproject.entity.ProjectBaseInfoVO;
 import com.alibaba.scwproject.entity.ProjectRedisVO;
 import com.alibaba.scwproject.entity.ProjectReturnVO;
+import com.alibaba.scwproject.enums.ProjectStatusEnum;
 import com.alibaba.scwproject.service.ProjectCreateService;
+import com.alibaba.scwproject.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import response.AppResponse;
 
 import javax.annotation.Resource;
@@ -32,6 +31,9 @@ public class ProjectCreateController {
 
     @Resource
     ProjectCreateService projectCreateService;
+
+    @Resource
+    ProjectService projectService;
 
     //问题：重复刷新调用会生成多个kv对，要对redis的projectToken做判断
     @PostMapping("/init")
@@ -113,10 +115,34 @@ public class ProjectCreateController {
         }
         //对拷大VO
         projectRedisVO.setProjectReturns(copyList);
-
         //更新redis
-        stringRedisTemplate.opsForValue().set(ProjectConstant.tokenConstant + projectReturnVO.getProjectToken(), JSON.toJSONString(projectRedisVO));
+        stringRedisTemplate.opsForValue().set(ProjectConstant.tokenConstant + projectRedisVO.getProjectToken(), JSON.toJSONString(projectRedisVO));
         return AppResponse.ok("");
+    }
+
+    @PostMapping("/submit")
+    public AppResponse<String> submitProject(@RequestHeader("accessToken") String accessToken, @RequestHeader("projectToken") String projectToken, @RequestParam("ops") String ops) {
+        if (StringUtils.isBlank(accessToken) || StringUtils.isBlank(projectToken)) {
+            log.error("用户信息：projectToken = {}, accesstoken = {}", projectToken, accessToken);
+            return AppResponse.fail("登录信息为空");
+        }
+        //校验状态
+        ProjectStatusEnum statusEnum = ProjectStatusEnum.of(ops);
+        System.out.println(statusEnum);
+        String s = stringRedisTemplate.opsForValue().get(ProjectConstant.tokenConstant + projectToken);
+        if (StringUtils.isBlank(s)) {
+            return AppResponse.fail("数据不存在");
+        }
+        
+        ProjectRedisVO project = JSON.parseObject(s, ProjectRedisVO.class);
+        //落库
+        Integer integer = projectService.saveProjectInfo(project);
+        if (integer < 0) {
+            return AppResponse.fail("保存失败");
+        }
+        //清理缓存
+        stringRedisTemplate.delete(ProjectConstant.tokenConstant + projectToken);
+        return AppResponse.ok("落库成功");
     }
 
 }

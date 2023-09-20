@@ -1,12 +1,16 @@
 package com.alibaba.scwproject.entity;
 
+import com.alibaba.scwproject.bean.TProject;
+import com.alibaba.scwproject.bean.TProjectImages;
 import com.alibaba.scwproject.bean.TReturn;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class ProjectRedisVO extends BaseVO {
+    private Integer id;
     /**
      * 项目的临时token
      */
@@ -61,5 +65,35 @@ public class ProjectRedisVO extends BaseVO {
      * 项目回报
      */
     private List<TReturn> projectReturns;
+
+
+    public static TProject convert2TProject(ProjectRedisVO projectRedisVO) {
+        TProject tProject = new TProject();
+        tProject.setMemberid(projectRedisVO.getMemberid());
+        tProject.setMoney((long) (projectRedisVO.getProjectMoney()));
+        tProject.setName(projectRedisVO.getProjectName());
+        tProject.setDay(projectRedisVO.getCrowdfundingDay());
+        return tProject;
+    }
+
+    public static TProjectImages convert2TProjectHeadImages(ProjectRedisVO projectRedisVO) {
+        TProjectImages tProjectImages = new TProjectImages();
+        tProjectImages.setProjectId(projectRedisVO.getId());
+        tProjectImages.setImageType((byte) 0);
+        tProjectImages.setImageUrl(projectRedisVO.getHeaderImage());
+        return tProjectImages;
+    }
+
+    public static List<TProjectImages> convert2TProjectDetailImages(ProjectRedisVO projectRedisVO) {
+        List<TProjectImages> imageList = new ArrayList<>();
+        projectRedisVO.getDetailsImage().forEach(s -> {
+            TProjectImages tProjectImages = new TProjectImages();
+            tProjectImages.setProjectId(projectRedisVO.getId());
+            tProjectImages.setImageUrl(s);
+            tProjectImages.setImageType((byte) 1);
+            imageList.add(tProjectImages);
+        });
+        return imageList;
+    }
 
 }
