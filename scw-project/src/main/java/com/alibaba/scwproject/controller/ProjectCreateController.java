@@ -1,6 +1,7 @@
 package com.alibaba.scwproject.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.scwproject.bean.TReturn;
 import com.alibaba.scwproject.constant.ProjectConstant;
 import com.alibaba.scwproject.entity.BaseVO;
 import com.alibaba.scwproject.entity.ProjectBaseInfoVO;
@@ -85,14 +86,37 @@ public class ProjectCreateController {
 
     @PostMapping("/reward")
     public AppResponse<String> projectReturn(@RequestBody List<ProjectReturnVO> projectReturnVOList) {
+        if (projectReturnVOList.size() == 0) {
+            return AppResponse.fail("没有提交内容");
+        }
+        ProjectReturnVO projectReturnVO = projectReturnVOList.get(0);
+        String stringVO = stringRedisTemplate.opsForValue().get(ProjectConstant.tokenConstant + projectReturnVO.getProjectToken());
+        ProjectRedisVO projectRedisVO = JSON.parseObject(stringVO, ProjectRedisVO.class);
+
         //遍历projectReturnVOList，鉴权
+        for (ProjectReturnVO vo : projectReturnVOList) {
+            if (!ProjectReturnVO.isLogin(vo)) {
+                log.error("用户信息：phone = {}, accesstoken = {}", vo.getPhone(), vo.getAccessToken());
+                return AppResponse.fail("没有登录信息");
+            }
+
+            if (!ProjectReturnVO.compareRedisVO(vo, projectRedisVO)) {
+                log.error("登录态校验不一致 = phone = {}, projectToken = {}, accessToken = {}", vo.getPhone(), vo.getProjectToken(), vo.getAccessToken());
+                return AppResponse.fail("登录态信息不一致");
+            }
+        }
 
         //对拷Treturn
-
+        List<TReturn> copyList = ProjectReturnVO.copyTReturn(projectReturnVOList);
+        if (copyList == null) {
+            return AppResponse.fail("对拷失败");
+        }
         //对拷大VO
+        projectRedisVO.setProjectReturns(copyList);
 
         //更新redis
-        return null;
+        stringRedisTemplate.opsForValue().set(ProjectConstant.tokenConstant + projectReturnVO.getProjectToken(), JSON.toJSONString(projectRedisVO));
+        return AppResponse.ok("");
     }
 
 }

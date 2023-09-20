@@ -1,9 +1,22 @@
 package com.alibaba.scwproject.entity;
 
+import com.alibaba.scwproject.bean.TReturn;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.StringUtils;
+import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 @Data
 public class ProjectReturnVO extends BaseVO {
+    /**
+     * 项目的临时token
+     */
+    private String projectToken;
+
     /**
      * 回报类型 0:实物回报 1:虚拟物品回报
      */
@@ -49,4 +62,37 @@ public class ProjectReturnVO extends BaseVO {
      */
     private Integer rtndate;
 
+
+    public static boolean compareRedisVO(ProjectReturnVO ProjectReturnVO, ProjectRedisVO projectRedisVO) {
+        if (!StringUtils.equals(ProjectReturnVO.getPhone(), projectRedisVO.getPhone())
+                || !StringUtils.equals(ProjectReturnVO.getProjectToken(), projectRedisVO.getProjectToken())
+                || !StringUtils.equals(ProjectReturnVO.getAccessToken(), projectRedisVO.getAccessToken())) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isLogin(ProjectReturnVO ProjectReturnVO) {
+        if (org.apache.commons.lang.StringUtils.isBlank(ProjectReturnVO.getPhone())
+                || org.apache.commons.lang.StringUtils.isBlank(ProjectReturnVO.getAccessToken())
+                || org.apache.commons.lang.StringUtils.isBlank(ProjectReturnVO.getProjectToken())) {
+            return false;
+        }
+        return true;
+    }
+
+    public static List<TReturn> copyTReturn(List<ProjectReturnVO> projectReturnVOList) {
+        List<TReturn> tReturnList = new ArrayList<>();
+        try {
+            projectReturnVOList.forEach(vo -> {
+                TReturn tReturn = new TReturn();
+                BeanUtils.copyProperties(vo, tReturn);
+                tReturnList.add(tReturn);
+            });
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+        return tReturnList;
+    }
 }
